@@ -1,0 +1,25 @@
+A. Write and share a small note about your choice of system to schedule periodic tasks (such as downloading a list of ISINs every 24 hours).
+Why did you choose it? Is it reliable enough; Or will it scale? If not, what are the problems with it? And, what else would you recommend to fix this problem at scale in production?
+
+
+For scheduling periodic tasks, such as downloading a list of ISINs every 24 hours, I've chosen to implement a task scheduling system using Celery with Redis as the message broker and backend.
+
+Reasons for Choosing Celery:
+
+Reliability: Celery is a widely used distributed task queue that is known for its reliability and robustness. It provides features like task retrying, error handling, and monitoring, which ensure that tasks are executed reliably even in case of failures.
+Scalability: Celery is designed to scale horizontally, allowing us to add more worker nodes as the load increases. By distributing tasks across multiple worker nodes, Celery can handle a large number of tasks concurrently, making it suitable for scaling in production environments.
+Flexibility: Celery supports various message brokers and backends, including Redis, RabbitMQ, and others, providing flexibility in choosing the infrastructure components based on specific requirements and preferences.
+Integration with Django: Since Celery integrates well with Django, it's easy to set up and use within a Django project. We can define tasks as Python functions and schedule them using Celery's API.
+Challenges and Considerations:
+
+Scalability Limits: While Celery is highly scalable, it's essential to monitor the system's performance and scale it accordingly as the workload grows. At extremely high loads, there might be limitations in terms of the number of tasks that can be processed simultaneously or the latency in task execution.
+Message Broker Reliability: The reliability of the message broker (e.g., Redis) is crucial for the overall reliability of the task scheduling system. If the message broker experiences downtime or data loss, it can impact the execution of scheduled tasks.
+Recommendations for Production Scale:
+
+Horizontal Scaling: To handle increased loads, consider horizontally scaling the Celery workers by adding more instances and distributing tasks across multiple worker nodes. Load balancing techniques can be used to evenly distribute tasks and prevent overload on individual nodes.
+Fault Tolerance: Implement fault-tolerant strategies such as task retrying, circuit breakers, and redundant message brokers to ensure resilience against failures and minimize downtime.
+Monitoring and Alerting: Set up monitoring tools to track the performance and health of the task scheduling system. Monitor metrics such as task throughput, latency, error rates, and resource utilization. Implement alerting mechanisms to notify administrators of any anomalies or issues.
+Infrastructure Automation: Use infrastructure as code tools like Terraform or AWS CloudFormation to automate the provisioning and management of infrastructure components, including Celery workers, message brokers, and monitoring systems. This ensures consistency, repeatability, and ease of deployment.
+
+
+In conclusion, Celery with Redis provides a reliable and scalable solution for scheduling periodic tasks in production environments. By addressing scalability challenges and implementing best practices for fault tolerance and monitoring, we can build a robust task scheduling system capable of handling high loads efficiently.
